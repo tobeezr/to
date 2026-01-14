@@ -106,39 +106,13 @@ def main():
     st.title("📊 Sales Analytics Dashboard")
     st.markdown("### Complete Sales Intelligence System")
     
-    # Sidebar
-    st.sidebar.header("📁 Data Upload")
-    
-    sales_file = st.sidebar.file_uploader(
-        "Upload Sales Data",
-        type=['csv', 'xlsx'],
-        help="Main sales/orders file"
-    )
-    
-    sku_file = st.sidebar.file_uploader(
-        "Upload SKU/Product Data (Optional)",
-        type=['csv', 'xlsx'],
-        help="Order lines/SKU file"
-    )
-    
-    if not sales_file:
-        st.info("👈 Upload your sales data to begin")
-        st.markdown("""
-        ### Required Columns:
-        - ORDER DATE
-        - CUSTOMER ID / NAME
-        - SALE REPRESENTATIVE
-        - STATUS
-        - TOTAL VALUES
-        - TOTAL COMMISSION
-        """)
-        return
-    
     # Load data
-    with st.spinner("Loading..."):
-        df = load_sales_data(sales_file)
-        df_sku = load_sku_data(sku_file) if sku_file else None
-    
+df = load_excel(GITHUB_FILES["sales"])
+df_sku = load_excel(GITHUB_FILES["sku"])
+    if df.empty:
+    st.warning("No sales data available")
+    return
+
     st.success(f"✅ Loaded {len(df):,} records")
     
     # Filters
